@@ -26,6 +26,42 @@ formRender.exportToHTML();//导出html
 formRender.importJSON('json');//导入逆向生成html
 formRender.exportJSON();//导出JSON
 ```
+| 参数           | 说明      |            |
+|--------------|---------|------------|
+| id           | 组件ID    | text,image |
+|label |   label   |            |
+| name |   input的唯一名称   |            |
+| labelWidth   | label列宽 | px         |
+| rowWidth     | 行宽      | %          |
+| inputWidth   | 输入框宽    | %          |
+| validateRule | 验证规则    | array      |
+| comment      | 输入框后的说明 |            |
+| required     | 必填(选)   |            |
+| placeholder  | 输入框内的提示 |            |
+| defValue     | 默认值     |            |
+| minValue|   最小值   |            |
+| maxValue |   最大值   |            |
+|minLength |  最小长度    |            |
+| maxLength |  最大长度    |            |
+|options |   array(radio,checkbox select 选择项)   |            |
+| layuiSkin|   checkbox以layui样式显示   |            |
+|dateFormat |  时间格式化样式    |            |
+|currentTime |   当前时间为初始值   |            |
+|milliscondFormat |  提交数据时格式化为毫秒    |            |
+|startDateName | 时间范围开始时间的name     |            |
+|endDateName |  时间范围结束时间的name    |            |
+|showInput |   滑块是否显示输入框   |            |
+|suffix |  滑块拖动时显示的后缀    |            |
+|rateCount |  评分显示的星星总数    |            |
+|uploadType |   array 文件上传的类型   |            |
+| minSize |  文件上传最小大小   |            |
+| maxSize |  文件上传最大大小   |            |
+| uploadUrl | 文件上传地址    |            |
+| uploadCount | 最大文件上传数量    |            |
+| groupCount |  多组布局的例的数量   |            |
+
+
+
 
 
 #### 参与贡献
