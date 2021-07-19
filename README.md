@@ -1,5 +1,7 @@
 # AdminJ layui-form-render
 
+![界面图](https://images.gitee.com/uploads/images/2021/0720/001030_f747e566_9463723.jpeg "editor1.jpg")
+
 #### 介绍
 基于layui的表单设计器，自己的一个开源项目里提出来的子项目，主要参考了阿狸的那个VUE的 form render，目前此项目处于开始阶段，另外并没有跟layui集成，如果想集成到一起只需要把HTML>body的内容放在变量里在render() 里开头写入即可
 
