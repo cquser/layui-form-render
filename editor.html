@@ -858,23 +858,12 @@
             if(!this.isEmpty(name) && item.attr('rename')!='false')item.find(':input').attr('name',name);
             if(!this.isEmpty(placeholder) && (cptId=='text' || cptId=='textarea' || cptId=='color'))item.find(':input').attr('placeholder',placeholder);
             if(!this.isEmpty(defValue) && (cptId=='text' || cptId=='hidden' || cptId=='password' || cptId=='textarea' || cptId=='color')){
-                var htmlEncode=function (s){  
-                    if(s==undefined || s=='')return '';
-                    s = s.replace(/&/g,"&amp;");
-                    s = s.replace(/</g,"&lt;");
-                    s = s.replace(/>/g,"&gt;");
-                    s = s.replace(/ /g,"&nbsp;");
-                    s = s.replace(/\'/g,"&#39;");
-                    s = s.replace(/\"/g,"&quot;");
-                    return s;  
-                }
-
+           
                 if(cptId=='textarea'){
-                    item.find(':input').text(htmlEncode(defValue));
+                    item.find(':input').text(that.htmlDecode(defValue));
                 }else{
-                    item.find(':input').attr('value',htmlEncode(defValue));
+                    item.find(':input').attr('value',that.htmlDecode(defValue));
                 }
-                console.log(item.find(':input').get(0).outerHTML)
             }
 
         } else {
@@ -1291,6 +1280,28 @@
         }
     }
 
+    
+    AdminJLayuiFormRender.prototype.htmlEncode=function (s){  
+                    if(s==undefined || s=='')return '';
+                    s = s.replace(/&/g,"&amp;");
+                    s = s.replace(/</g,"&lt;");
+                    s = s.replace(/>/g,"&gt;");
+                    s = s.replace(/ /g,"&nbsp;");
+                    s = s.replace(/\'/g,"&#39;");
+                    s = s.replace(/\"/g,"&quot;");
+                    return s;  
+                }
+    AdminJLayuiFormRender.prototype.htmlDecode=function (s){  
+          if(s==undefined || s.length == 0) return '';
+          s = s.replace(/&amp;/g,"&");
+          s = s.replace(/&lt;/g,"<");
+          s = s.replace(/&gt;/g,">");
+          s = s.replace(/&nbsp;/g," ");
+          s = s.replace(/&#39;/g,"\'");
+          s = s.replace(/&quot;/g,"\"");
+          return s;  
+    }
+
     AdminJLayuiFormRender.prototype.initRightPropertiesComponents = function () {//绘制右边的属性栏
         var that=this;
         var tools = {}
@@ -1645,6 +1656,7 @@
                     $(this).focusout(function () {
                         var index = $(this).parent().parent().attr('index');
                         var val = $(this).val();
+                        var _val=that.htmlEncode(val);
                         var jqueryFindName = 'select option[index=' + index + ']';//select select2
                         if (cptId == 'radio' || cptId == 'checkbox') {
                             jqueryFindName = '[index=' + index + ']';
@@ -1656,11 +1668,11 @@
                                 item.find('select').trigger('destroy').select2();
                             }
                         } else {
-                            findRes.attr('title', val);
+                            findRes.attr('title', _val);
                         }
 
                         var arrayIndex = queryIndex(index);
-                        options[arrayIndex]['text'] = val;//修改text
+                        options[arrayIndex]['text'] = _val;//修改text
                         layui.form.render();
                     });
                 });
@@ -2129,7 +2141,7 @@
             //$('#'+_id).unbind("change");
             input.keyup(function () {
                 var val = $(this).val();
-                properties[$(this).attr('id')] = val
+                properties[$(this).attr('id')] = that.htmlEncode(val);
                 if (inputCallback != undefined) inputCallback($(this), val);
             })
 
@@ -2241,6 +2253,7 @@
             var html = '<ul class="propertiesdiv_sp"><li style="margin-top: 0px;">' + label + '</li>\n<li>' + input + '</li></ul>';
             return html;
         }
+
 
         return tools;
     }
@@ -2457,7 +2470,7 @@
             resHtml.append(itemHtml);
         }
         var js=JSON.stringify(exportMap);
-        js=js.replaceAll("'","\'");
+        //js=js.replaceAll("'","\\'");
         js="<script>var _json='"+js+"';<\/script>\r\n";
 
         return  js+resHtml.get(0).outerHTML;
@@ -2468,15 +2481,15 @@
     }
 
     AdminJLayuiFormRender.prototype.showLayerTextarea = function (val) {//显示有textarea的弹出层
-        val=val.replaceAll('"','&quot;');
-        val=val.replaceAll('<','&lt;');
-        val=val.replaceAll('>','&gt;');
         layui.layer.open({
             type: 1,
             closeBtn: 1,
             shadeClose: true,
             area: ['80%', '90%'],
-            content: '<textarea id="outprint_textarea" style="width: 98%;height: 97%; margin-left: 1%;margin-top: 1%;">'+val+'</textarea>'
+            content: '<textarea id="outprint_textarea" style="width: 98%;height: 97%; margin-left: 1%;margin-top: 1%;"></textarea>',//'+val+'
+            success: function(layero, index){
+                $('#outprint_textarea').text(val);
+            }
         });
     }
 
