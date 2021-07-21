@@ -1,5 +1,7 @@
 # AdminJ layui-form-render
 
+[ **演示地址** ](http://http://47.100.117.64:18088/app/editor.html)
+
 ![界面图](https://images.gitee.com/uploads/images/2021/0720/001030_f747e566_9463723.jpeg "editor1.jpg")
 
 #### 介绍
