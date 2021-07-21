@@ -94,15 +94,6 @@
         }
 
     </style>
-    <!--icon字体 START-->
-    <style>
-
-        .bi {
-            font-size: 0.8rem;
-            color: #fff;
-        }
-
-    </style>
     <!--框架CSS START-->
     <style>
         .adminj-sort-item {
@@ -867,7 +858,23 @@
             if(!this.isEmpty(name) && item.attr('rename')!='false')item.find(':input').attr('name',name);
             if(!this.isEmpty(placeholder) && (cptId=='text' || cptId=='textarea' || cptId=='color'))item.find(':input').attr('placeholder',placeholder);
             if(!this.isEmpty(defValue) && (cptId=='text' || cptId=='hidden' || cptId=='password' || cptId=='textarea' || cptId=='color')){
-                item.find(':input').val(defValue);
+                var htmlEncode=function (s){  
+                    if(s==undefined || s=='')return '';
+                    s = s.replace(/&/g,"&amp;");
+                    s = s.replace(/</g,"&lt;");
+                    s = s.replace(/>/g,"&gt;");
+                    s = s.replace(/ /g,"&nbsp;");
+                    s = s.replace(/\'/g,"&#39;");
+                    s = s.replace(/\"/g,"&quot;");
+                    return s;  
+                }
+
+                if(cptId=='textarea'){
+                    item.find(':input').text(htmlEncode(defValue));
+                }else{
+                    item.find(':input').attr('value',htmlEncode(defValue));
+                }
+                console.log(item.find(':input').get(0).outerHTML)
             }
 
         } else {
