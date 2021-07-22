@@ -913,7 +913,7 @@
 
         var initRadioOrChecxbox=function (item,inputType) {
             var options = initOptions(item, undefined, 'checked', function (index, option, selectResult) {
-                return '<input name="test" type="'+inputType+'" value="' + option.value + '" index="' + index + '" ' + selectResult + ' title="' + option.text + '" lay-skin="primary">';
+                return '<input name="" type="'+inputType+'" value="' + option.value + '" index="' + index + '" ' + selectResult + ' title="' + option.text + '" lay-skin="primary">';
             });
             if (options != undefined) {
                 item.find('.layui-form-label').next().html(options);
@@ -921,8 +921,9 @@
             var divId = item.attr('id');
             var name = that.propertiesMap[divId]['name'];
             if(!that.isEmpty(name)){
-                item.find('input [type="'+inputType+'"]').attr('name', name);
+                item.find(':input').attr('name', name);
             }
+            
         }
 
         var initDate=function (item,isRange) {
@@ -1579,7 +1580,7 @@
                     selected = optionItem.isSelect == '0' ? 'checked' : '';
                     var skin='',layuiSkin=properties['layuiSkin'];
                     if(layuiSkin!='0')skin='lay-skin="primary"';
-                    uiHtml += '<input name="test" type="' + inputType + '" '+skin+' value="' + optionItem.value + '" index="' + i + '" ' + selected + ' title="' + optionItem.text + '">';
+                    uiHtml += '<input name="" type="' + inputType + '" '+skin+' value="' + optionItem.value + '" index="' + i + '" ' + selected + ' title="' + optionItem.text + '">';
                 }
 
                 return {propertiesHtml, uiHtml};//右边工具栏的HTML，中间的编辑HTML
@@ -2424,7 +2425,6 @@
                 return html;
             }
             html = $($('#cpts_items').find("#" + cptId).get(0).outerHTML);
-            html.removeAttr('rename');
             html.attr('id', divId).attr('cpt_id', cptId);
             that.propertiesMap[divId] = rowData;
             //parentNode.append(html);
@@ -2435,6 +2435,7 @@
                 if (cptId == 'editor') html.find('.editor').html('');
                 that.createSortableItemUI(html, {isInitJs: false});
                 html.removeAttr('rename');
+                
                 createValidateFunc(rowData,html);
                 return html;
             }
