@@ -885,7 +885,7 @@ AdminJFormData.prototype.setData=function(formId,data) {
                             if(_val==initValue[i]){
                                 $(this).prop('checked', 'true');
                             }else{
-                                $(this).removeAttr('checked');
+                                $(this).prop('checked', '');
                             }
                         }
                     });
@@ -898,7 +898,7 @@ AdminJFormData.prototype.setData=function(formId,data) {
                 if(initValue==selectedValue){
                     $('#'+divId).find('[type="checkbox"]').prop('checked','true');
                 }else{
-                    $('#'+divId).find('[type="checkbox"]').removeAttr('checked');
+                    $('#'+divId).find('[type="checkbox"]').prop('checked', '');
                 }
                 }
                 break;
