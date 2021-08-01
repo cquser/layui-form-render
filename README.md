@@ -94,7 +94,7 @@ adminJFormData.init(_json, 'form');//_json 为form render导出 html时自动生
 - 初始化数据:
 ```
 var d={"hidden":"f","text":"123","textarea":"nn","password":"1222333","select":"2","radio":"2","checkbox":["0","2"],"select2":["0","2"],"color":"#0f3e62","switch":"1"};
-adminJFormData.setData('form',d);//第一个参数为fomr 的 lay-filter 值, 另外checkbox、select2的值必须是array
+adminJFormData.setData('form',d);//第一个参数为 form 的 lay-filter 值, 另外checkbox、select2的值必须是array
 ```
 - 取数据：
 
