@@ -1536,6 +1536,8 @@
             })
             var properties = that.propertiesMap[item.attr('id')];
             properties['isSelect']='0';
+            properties['selectedValue']='0';
+            properties['defValue']='1';
             tools.renderSingleCheckbox(item,'选中','isSelect',function (data, val) {
                 var properties = that.propertiesMap[item.attr('id')];
                 if(val=='0'){
@@ -1546,8 +1548,8 @@
                 properties['isSelect']=val;
                 layui.form.render('checkbox');
             });
-            tools.renderInput(item, '选中值', 'selectedValue')
-            tools.renderInput(item, '未选中值', 'defValue')
+            tools.renderInput(item, '选中值', 'selectedValue','0')
+            tools.renderInput(item, '未选中值', 'defValue','1')
         }
 
         tools.renderSelect2 = function (item) {
