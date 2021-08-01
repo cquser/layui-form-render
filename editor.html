@@ -217,6 +217,9 @@
 
 </head>
 <body>
+<form action="browse.jsp" method="post" target="_blank id="browseResultForm">
+    <input type="hidden" name="resHtml" id="resHtml" /><input type="submit" name="button" id="submitHtml" value="提交" style="display: none;" />
+</form>
 
 <form class="layui-form" id="form" lay-filter="form" action="">
         <div class="ds-top-left">AdminJ LayuiFormRender</div>
@@ -232,6 +235,9 @@
             </button>
             <button type="button" class="layui-btn layui-btn-sm" lay-filter="exportJSON" id="importJSON">
                 <i class="layui-icon layui-icon-upload-drag" style="font-size: 1.2em"></i> 导入JSON
+            </button>
+            <button type="button" class="layui-btn layui-btn-sm" lay-filter="browseResult" id="browseResult">
+                <i class="layui-icon layui-icon-website" style="font-size: 1.2em"></i> 预览
             </button>
         </div>
 
@@ -2550,6 +2556,12 @@
                 formRender.showLayerTextarea(json);
             })
 
+            $('#browseResult').click(function () {
+                var res=formRender.exportToHTML();
+                $('#resHtml').val(res);
+                $('#submitHtml').trigger('click');
+            })
+            
             var winHeight = $(window).height() - 10;
             if ($('.ds-center').height() < winHeight) {
                 $('.ds-center').css('min-height', winHeight-$('.ds-center').css('top'))
