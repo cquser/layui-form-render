@@ -73,8 +73,32 @@ formRender.exportJSON();//导出JSON
 ####  **AdminJFormData (editor_base.html) 功能使用说明**
 AdminJFormData 是对form render的增强，如果你在导出的html form里选择了长度，最大值 最小值验证等、使用了编辑器、滑块，用AdminJFormData会自动初始化这些组件并且生成验证功能，其节省的时间比 form render要多的多。
 
-AdminJFormData 集成了getData('form lay-filter'),和setData('form lay-filter',{}) 功能， getData拿取form数据，setData 设置form数据, 功能可以在预览里体验
-，使用需要把导出的html代码粘到editor_base.html 的 body里即可。
+- 初始化AdminJFormData 导入js：
+```
+<script src="adminj/adminj_form.js"></script>
+<script src="adminj/adminj_utils.js"></script>
+```
+- 获取AdminJFormData对像
+```
+var adminJFormData = layui.adminJFormData;
+```
+- 初始化html form，初始化各种组件和初始值:
+```
+adminJFormData.init(_json, 'form');//_json 为form render导出 html时自动生成的代码，第2个参数为 fomr 的 lay-filter 值
+```
+- 初始化数据:
+```
+var d={"hidden":"f","text":"123","textarea":"nn","password":"1222333","select":"2","radio":"2","checkbox":["0","2"],"select2":["0","2"],"color":"#0f3e62","switch":"1"};
+adminJFormData.setData('form',d);//第一个参数为fomr 的 lay-filter 值, 另外checkbox、select2的值必须是array
+```
+- 取数据：
+
+```
+var data = adminJFormData.getData('form');//第一个参数为fomr 的 lay-filter 值
+```
+
+
+
 
  **关于图片上传结果:** 
 需要server返回 code=0,filename=上传文件名 的json的数据结构，如果是多文件上传则getData时对应字段拿到的是个array,单文件是string
@@ -93,7 +117,7 @@ layui.use('element', function () {
         adminJFormData.init(_json, 'form');
 
         //初始化form数据
-        var d={"hidden":"f","text":"123","textarea":"nn","password":"1222333","select":"2","radio":"2","checkbox":["0","2"],,"select2":["0","2"],"color":"#0f3e62","switch":"1"};
+        var d={"hidden":"f","text":"123","textarea":"nn","password":"1222333","select":"2","radio":"2","checkbox":["0","2"],"select2":["0","2"],"color":"#0f3e62","switch":"1"};
         adminJFormData.setData('form',d);
 
         layui.form.on('submit(postButton)', function (data) {
