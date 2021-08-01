@@ -35,3 +35,6 @@ Array.prototype.deleteValue=function(val){
     }
 }
 
+stringIsEmpty=function (str) {
+    return str==undefined || str.length==0;
+}
