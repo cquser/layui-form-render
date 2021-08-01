@@ -1704,12 +1704,20 @@
             clickEventFunc(item, cptId, html);
 
             layui.form.on('radio(isSelect)', function (data) {//option属性前如里是radio
+                
                 for (var i = 0; i < options.length; i++) {
                     options[i]['isSelect'] = options[i]['value'] == data.value ? '0' : '1';
                 }
                 if (cptId == 'radio') {
-                    var index = $(data.elem).parent().parent().attr('index');
-                    item.find('[index=' + index + ']').prop('checked', 'true');
+                    //var index = $(data.elem).parent().parent().attr('index');
+                    //item.find('[index=' + index + ']').prop('checked', 'true');
+                    item.find('[type="radio"]').each(function(i,e){
+                       if( $(this).val()==data.value){
+                        $(this).prop('checked', 'true');
+                       }else{
+                        $(this).prop('checked', '');
+                       }
+                    })
                 } else {
                     item.find(':input').val(data.value);
                 }
@@ -1718,14 +1726,19 @@
             });
             layui.form.on('checkbox(isSelect)', function (data) {//option属性前如里是checkbox
                 if (cptId == 'checkbox') {
-                    var index = $(data.elem).parent().parent().attr('index');
-                    if (data.elem.checked) {
-                        item.find('[index=' + index + ']').prop('checked', 'true');
-                    } else {
-                        item.find('[index=' + index + ']').removeAttr('checked');
-                    }
+                    item.find('[type="checkbox"]').each(function(i,e){
+                       if( $(this).val()==data.value){
+                            if (data.elem.checked) {
+                                $(this).prop('checked', 'true');
+                            }else{
+                                $(this).prop('checked', '');
+                            }
+                            return;
+                        }
+                    });
+                    // var index = $(data.elem).parent().parent().attr('index');
 
-                    layui.form.render('checkbox');
+                    layui.form.render();
                 } else {
                     checkboxSelect(item);
                 }
