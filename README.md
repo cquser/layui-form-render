@@ -68,6 +68,39 @@ formRender.exportJSON();//导出JSON
 
 
 
+#### editor_base.html 功能使用说明
+editor_base.html 集成了getData('form lay-filter'),和setData('form lay-filter',{}) 功能， getData拿取form数据，setData 设置form数据, 功能可以在预览里体验
+
+
+需要导入js:
+
+```
+<script src="adminj/adminj_form.js?v=10166"></script>
+<script src="adminj/adminj_utils.js"></script>
+```
+
+
+```
+layui.use('element', function () {
+        var adminJFormData = layui.adminJFormData;
+        adminJFormData.init(_json, 'form');
+
+        //初始化form值
+        var d={"hidden":"f","text":"123","textarea":"nn","password":"1222333","select":"2","radio":"2","checkbox":["0","2"],,"select2":["0","2"],"color":"#0f3e62","switch":"1"};
+        adminJFormData.setData('form',d);
+
+        layui.form.on('submit(postButton)', function (data) {
+            var data = adminJFormData.getData('form')
+            var val = JSON.stringify(data);
+            console.log(val)
+
+            return false;
+        });
+
+    });
+
+```
+
 
 
 #### 参与贡献
@@ -80,3 +113,8 @@ formRender.exportJSON();//导出JSON
 <span id="cpts_items" style="display: none">
 ```
 所有的拖动后生成的组件都在这里，可以显示出来进行编辑预览等操作
+
+- 8-1 发布基础代码版本
+
+- 7-2? 发布第一个版本
+
