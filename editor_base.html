@@ -1,0 +1,181 @@
+<!--author:adminj-->
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title></title>
+    <link rel="stylesheet" href="libs/layui/css/layui.css?v=1">
+    <link rel="stylesheet" href="libs/select2/css/select2.min.css">
+    <style>
+
+
+
+        .upload_ul {
+            border: dashed 0px #009;
+        }
+
+        .upload_ul li {
+            list-style-type: none;
+            float: left;
+            display: inline;
+            border: dashed 1px #009;
+            list-style: none;
+            margin: 5px;
+            padding: 0px;
+        }
+
+        .upload_tools_div {
+            display: block;
+            position: absolute;
+            pointer-events: none;
+            border: solid coral 0px;
+        }
+
+        .upload_image_style {
+            width: 100px;
+            height: 80px;
+        }
+
+
+        .list li {
+            list-style-type: none;
+            float: left;
+            display: inline;
+            border: dotted 1px #009;
+            list-style: none;
+            margin: 0px;
+            padding: 0px;
+        }
+
+
+        .layui-form-item {
+            margin-bottom: 10px;
+            clear: both;
+            *zoom: 1;
+        }
+
+        /*.layui-form-radio {*/
+        /*    line-height: 28px;*/
+        /*    margin: 6px 0px 0 0;*/
+        /*    padding-right: 5px;*/
+        /*    cursor: pointer;*/
+        /*    font-size: 0;*/
+        /*}*/
+
+        .select2-container--default .select2-selection--multiple .select2-selection__choice {
+            background-color: #337ab7;
+            border: 1px solid #1d6fa5;
+            color: #fff;
+            border-radius: 4px;
+            cursor: default;
+            float: left;
+            margin-right: 5px;
+            margin-top: 5px;
+            padding: 3px 5px;
+        }
+
+        .select2-container--default .select2-selection--multiple .select2-selection__choice__remove {
+            color: rgba(255, 255, 255, .7);
+            float: right;
+            margin-left: 5px;
+            margin-right: -2px;
+        }
+
+        .select2-container .select2-search--inline {
+            float: left;
+            border: none;
+        }
+
+        .select2-container--default .select2-selection--multiple {
+            background-color: white;
+            border: 1px solid #eee;
+            border-radius: 4px;
+            cursor: text;
+            min-height: 38px;
+        }
+
+    </style>
+    <style>
+
+        .bi {
+            font-size: 0.8rem;
+            color: #fff;
+        }
+
+    </style>
+</head>
+
+
+<body>
+
+  <!--code-->
+
+
+<span style="display: none">
+    <div id="uploadImages">
+        <ul class="upload_ul">
+            <li>
+                     <div class="upload_image_style" update_width="true">
+                         <div class="upload_image_style" style="position:absolute;z-index: 597;" flag="upload_div">
+                           <div class="layui-upload-list" style="text-align: center;line-height: 60px;">
+                               <i class="layui-icon layui-icon-upload-drag" style="font-size: 1.8em;color: #1d6fa5;"></i>
+                             <p id="msgText" style="display: none"></p>
+                           </div>
+                           <div id="upload_bar_div" style="top:35%;width: 100%; display: none;position:absolute;" update_width="true">
+                             <div class="layui-progress layui-progress-big" lay-showpercent="yes" lay-filter="layui-progress">
+                               <div class="layui-progress-bar" lay-percent=""></div>
+                             </div>
+                           </div>
+                         </div>
+                      <div class="upload_image_style" id="upload_image_div" style="position:absolute;z-index: 598;border:dashed 0px red;pointer-events: none;" update_width="true">
+                              <img class="layui-upload-img" style="wdith:100%;height: 100px;pointer-events: none;display: none;" id="image_src">
+                      </div>
+                       <div class="upload_image_style" id="upload_mask_div" style="position:absolute;z-index: 599;pointer-events: auto; display: none" update_width="true">
+                      </div>
+
+                      <div id="close_div" class="upload_tools_div upload_image_style" style="pointer-events: none;position:absolute;z-index: 600;border:dotted 0px red; " update_width="true">
+                     <div style="position:absolute;pointer-events: auto;cursor:pointer;background-color:#1d6fa5;top:-8px;right: -10px;border-radius:10px;height: 18px;width: 18px;line-height: 18px;">
+                         <i class="layui-icon layui-icon-close" style="font-size: 15px; color:#ffffff;padding: 1px;"></i>
+                     </div>
+                     </div>
+
+                     </div>
+
+
+            </li>
+
+        </ul>
+    </div>
+</span>
+</body>
+<script src="libs/layui/layui.js?2.6.8"></script>
+<script src="libs/jquery/jquery-3.6.0.min.js"></script>
+<script src="libs/select2/js/select2.full.min.js"></script>
+<script src="libs/ckeditor5/ckeditor.js"></script>
+
+<script src="adminj/adminj_form.js?v=10166"></script>
+<script src="adminj/adminj_utils.js"></script>
+</html>
+<script>
+
+    layui.use('element', function () {
+        var adminJFormData = layui.adminJFormData;
+        adminJFormData.init(_json, 'form');
+
+        //var d={"hidden":"f","text":"123","textarea":"nn","password":"1222333","select":"2","radio":"2","checkbox":["0","2"],"color":"#0f3e62","switch":"1"};
+        //adminJFormData.setData('form',d);
+
+        layui.form.on('submit(postButton)', function (data) {
+            var data = adminJFormData.getData('form')
+            var val = JSON.stringify(data);
+            console.log(val)
+
+            return false;
+        });
+
+    });
+
+
+
+</script>
