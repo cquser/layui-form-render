@@ -876,7 +876,12 @@
             }
 
         } else {
-            that.propertiesMap[divId] = {id: cptId};
+            var name='name'+new Date().getTime();
+            var cptProperties={id: cptId,name:name};
+            if(item.attr('rename')!='false'){
+                item.find(':input').attr('name',name);
+            }
+            that.propertiesMap[divId] = cptProperties;
         }
         this.initSortabletemMouseEvent(item);
         this.renderComponent('this.components', item,initParams,function (func,item,initParams) {
@@ -2302,10 +2307,9 @@
         } else {
             var pro=that.propertiesMap[id];
             if(pro!=undefined) {
-                resArr[resArr.length] = that.propertiesMap[id];
+                resArr[resArr.length] = pro;
             }
         }
-
     }
 
     AdminJLayuiFormRender.prototype.exportJSON = function () {//导出结构为JSON
@@ -2487,7 +2491,9 @@
 
         var exportMap={};//按ID为KEY导出属性
         var params={index:0,exportMap:exportMap},resHtml=$('<form class="layui-form" id="form" lay-filter="form" action=""></form>');
-        var json=JSON.parse(that.exportJSON());
+        var exportJSON=that.exportJSON();
+        if(exportJSON=='')return '';
+        var json=JSON.parse(exportJSON);
         for (var i = 0; i < json.length; i++) {
             var rowData = json[i];
             var itemHtml=exportFunc(rowData,params);
