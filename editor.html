@@ -1,3 +1,4 @@
+<!--author:adminj-->
 <!doctype html>
 <html lang="en">
 <head>
@@ -308,6 +309,7 @@
         <label class="layui-form-label">下拉选项</label>
         <div class="layui-input-inline">
           <select name="">
+            <option value="0" selected="">选择</option><option value="1">选项2</option><option value="2">选项3</option>
           </select>
         </div>
             <div class="layui-form-mid layui-word-aux"></div>
@@ -319,13 +321,7 @@
         <div class="layui-input-inline" style="width:60%;">
                 <select name="" lay-ignore class="select2" multiple="multiple" data-placeholder=""
                         data-dropdown-css-class="select2-purple" style="width: 99%;">
-                    <option value="0">Alabama</option>
-                    <option value="1">Alaska</option>
-                    <option value="2">California</option>
-                    <option value="3">Delaware</option>
-                    <option value="4">Tennessee</option>
-                    <option value="5">Texas</option>
-                    <option value="6">Washington</option>
+                        <option value="0" selected="">选择</option><option value="1">选项2</option><option value="2">选项3</option>
                 </select>
         </div>
 
@@ -334,8 +330,9 @@
     <div class="layui-form-item adminj-sort-item" id="radio">
         <label class="layui-form-label">单选择框</label>
         <div class="layui-input-inline" style="width:60%;">
-      <input type="radio" name="sex" value="男" title="男" checked="">
-      <input type="radio" name="sex" value="女" title="女">
+            <input name="" type="radio" value="0" index="0" checked="" title="选择" lay-skin="primary">
+            <input name="" type="radio" value="1" index="1" title="选项2" lay-skin="primary">
+            <input name="" type="radio" value="2" index="2" title="选项3" lay-skin="primary">
     </div>
     <div class="layui-form-mid layui-word-aux"></div>
     </div>
@@ -343,9 +340,9 @@
     <div class="layui-form-item adminj-sort-item" id="checkbox">
         <label class="layui-form-label">多选择框</label>
         <div class="layui-input-inline" style="width:60%;">
-          <input type="checkbox" name="like1" lay-skin="primary" value="0" title="写作" checked="">
-          <input type="checkbox" name="like1" lay-skin="primary" value="1" title="阅读">
-          <input type="checkbox" name="like1" lay-skin="primary" value="2" title="游戏">
+            <input name="" type="checkbox" value="0" index="0" checked="" title="选择" lay-skin="primary">
+            <input name="" type="checkbox" value="1" index="1" title="选项2" lay-skin="primary">
+            <input name="" type="checkbox" value="2" index="2" title="选项3" lay-skin="primary">
         </div>
         <div class="layui-form-mid layui-word-aux"></div>
     </div>
@@ -509,7 +506,7 @@
 
     </div>
 
-    <div id="subimtData" class="layui-form-item adminj-sort-item" rename="false">
+    <div id="submitData" class="layui-form-item adminj-sort-item" rename="false">
     <div class="layui-input-block">
       <button type="submit" class="layui-btn" lay-submit="" lay-filter="postButton" id="postButton">立即提交</button>
       <button type="reset" class="layui-btn layui-btn-primary">重置</button>
@@ -645,6 +642,12 @@
 
 <script>
 
+/**
+ * 开源不易，如果可能请留下版权信息
+ * @auther adminj
+ * @date 2021-7
+ * @version 1.1
+ **/
 
     function AdminJLayuiFormRender() {
         this.propertiesMap={};
@@ -703,7 +706,7 @@
             'editor': '文本编辑器',
             'slider': '滑块',
             'rate': '评分',
-            'subimtData': '提交数据'
+            'submitData': '提交数据'
         }
         var cpts_file = {'uploadImage': '单图上传', 'uploadImages': '多图上传', 'uploadFile': '文件上传', 'uploadFiles': '多文件上传'}
         var cpts_layout = {'groupLayout': '多组布局'}
@@ -1925,6 +1928,7 @@
 
             var properties = that.propertiesMap[item.attr('id')];
             var _value = properties['defValue'], _rateCount = properties['rateCount'];
+            if(_rateCount=='' || _rateCount==undefined)_rateCount='5';
             tools.renderInput(item, '默认值', 'defValue', _value, function (_obj, val) {
                 rateFunc();
             })
