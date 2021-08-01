@@ -7,7 +7,7 @@
 #### 介绍
 基于layui的表单设计器，自己的一个开源项目里提出来的子项目，主要参考了阿狸的那个VUE的 form render，目前此项目处于开始阶段，另外并没有跟layui集成，如果想集成到一起只需要把HTML>body的内容放在变量里在render() 里开头写入即可
 
-AdminJ layui-form-render 不只是生成html form 还集成了 AdminJFormData form的数据初始化组件(数据)并生成验证代码功能(参考editor_base.html)，开箱即用。
+AdminJ layui-form-render 不只是生成html form 还另外提供了 AdminJFormData form的数据初始化组件(数据)并生成验证代码功能(参考editor_base.html)，开箱即用。
 
 演示地址: http://47.244.155.29:13308/editor/editor.html
 
@@ -121,7 +121,7 @@ layui.use('element', function () {
 ```
 所有的拖动后生成的组件都在这里，可以显示出来进行编辑预览等操作
 
--  **8-1 发布基础代码版本** 
+-  **8-1 发布 AdminJFormData 版本** 
 
--  **7-2? 发布第一个版本** 
+-  **7-2? 发布第一个form render版本** 
 
