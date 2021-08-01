@@ -7,6 +7,8 @@
 #### 介绍
 基于layui的表单设计器，自己的一个开源项目里提出来的子项目，主要参考了阿狸的那个VUE的 form render，目前此项目处于开始阶段，另外并没有跟layui集成，如果想集成到一起只需要把HTML>body的内容放在变量里在render() 里开头写入即可
 
+AdminJ layui-form-render 不只是生成html form 还另外提供了 AdminJFormData form的数据初始化组件(数据)并生成验证代码功能(参考editor_base.html)，开箱即用。
+
 演示地址: http://47.244.155.29:13308/editor/editor.html
 
 #### 软件架构
@@ -68,6 +70,73 @@ formRender.exportJSON();//导出JSON
 
 
 
+####  **AdminJFormData (editor_base.html) 功能使用说明**
+AdminJFormData 是对form render的增强，如果你在导出的html form里选择了长度，最大值 最小值验证等、使用了编辑器、滑块，用AdminJFormData会自动初始化这些组件并且生成验证功能，其节省的时间比 form render要多的多。
+
+- 如何使用：只需要把 form render 导出的html粘到 editor_base.html 的body 内就OK，功能参考 预览 功能
+
+
+ **AdminJFormData集成说明** 
+
+- 初始化AdminJFormData 导入js：
+```
+<script src="adminj/adminj_form.js"></script>
+<script src="adminj/adminj_utils.js"></script>
+```
+- 获取AdminJFormData对像
+```
+var adminJFormData = layui.adminJFormData;
+```
+- 初始化html form，初始化各种组件和初始值:
+```
+adminJFormData.init(_json, 'form');//_json 为form render导出 html时自动生成的代码，第2个参数为 form 的 lay-filter 值
+```
+- 初始化数据:
+```
+var d={"hidden":"f","text":"123","textarea":"nn","password":"1222333","select":"2","radio":"2","checkbox":["0","2"],"select2":["0","2"],"color":"#0f3e62","switch":"1"};
+adminJFormData.setData('form',d);//第一个参数为 form 的 lay-filter 值, 另外checkbox、select2的值必须是array
+```
+- 取数据：
+
+```
+var data = adminJFormData.getData('form');//第一个参数为form 的 lay-filter 值
+```
+
+
+
+
+ **关于图片上传结果:** 
+需要server返回 code=0,filename=上传文件名 的json的数据结构，如果是多文件上传则getData时对应字段拿到的是个array,单文件是string
+
+| code     | 0      | 上传成功返回0  |
+|----------|--------|----------|
+| filename | xx.jpg | 上传成功的文件名 |
+
+
+
+ **使用例子如下:** 
+
+```
+layui.use('element', function () {
+        var adminJFormData = layui.adminJFormData;
+        adminJFormData.init(_json, 'form');
+
+        //初始化form数据
+        var d={"hidden":"f","text":"123","textarea":"nn","password":"1222333","select":"2","radio":"2","checkbox":["0","2"],"select2":["0","2"],"color":"#0f3e62","switch":"1"};
+        adminJFormData.setData('form',d);
+
+        layui.form.on('submit(postButton)', function (data) {
+            var data = adminJFormData.getData('form');//取form的数据
+            var val = JSON.stringify(data);
+            console.log(val)
+
+            return false;
+        });
+
+    });
+
+```
+
 
 
 #### 参与贡献
@@ -80,3 +149,8 @@ formRender.exportJSON();//导出JSON
 <span id="cpts_items" style="display: none">
 ```
 所有的拖动后生成的组件都在这里，可以显示出来进行编辑预览等操作
+
+-  **8-1 发布 AdminJFormData 版本** 
+
+-  **7-2? 发布第一个form render版本** 
+
