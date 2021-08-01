@@ -7,7 +7,7 @@
 #### 介绍
 基于layui的表单设计器，自己的一个开源项目里提出来的子项目，主要参考了阿狸的那个VUE的 form render，目前此项目处于开始阶段，另外并没有跟layui集成，如果想集成到一起只需要把HTML>body的内容放在变量里在render() 里开头写入即可
 
-AdminJ layui-form-render 不只是生成html form 还集成了 AdminJFormData form的数据初始化生成验证代码功能(参考editor_base.html)，开箱即用。
+AdminJ layui-form-render 不只是生成html form 还集成了 AdminJFormData form的数据初始化组件(数据)并生成验证代码功能(参考editor_base.html)，开箱即用。
 
 演示地址: http://47.244.155.29:13308/editor/editor.html
 
@@ -70,12 +70,22 @@ formRender.exportJSON();//导出JSON
 
 
 
-#### editor_base.html 功能使用说明
+####  **AdminJFormData (editor_base.html) 功能使用说明**
+AdminJFormData 是对form render的增强，如果你在导出的html form里选择了长度，最大值 最小值验证等、使用了编辑器、滑块，用AdminJFormData会自动初始化这些组件并且生成验证功能，其节省的时候比 form render要多的多。
+
 editor_base.html 集成了getData('form lay-filter'),和setData('form lay-filter',{}) 功能， getData拿取form数据，setData 设置form数据, 功能可以在预览里体验
-，使用需要把导出的html代码粘到editor_base.html 的 body里即可
+，使用需要把导出的html代码粘到editor_base.html 的 body里即可。
+
+ **关于图片上传结果:** 
+需要server返回 code=0,filename=上传文件名 的json的数据结构，如果是多文件上传则getData时对应字段拿到的是个array,单文件是string
+
+| code     | 0      | 上传成功返回0  |
+|----------|--------|----------|
+| filename | xx.jpg | 上传成功的文件名 |
 
 
-使用例子如下:
+
+ **使用例子如下:** 
 
 ```
 layui.use('element', function () {
@@ -111,7 +121,7 @@ layui.use('element', function () {
 ```
 所有的拖动后生成的组件都在这里，可以显示出来进行编辑预览等操作
 
-- 8-1 发布基础代码版本
+-  **8-1 发布基础代码版本** 
 
-- 7-2? 发布第一个版本
+-  **7-2? 发布第一个版本** 
 
