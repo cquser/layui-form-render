@@ -89,7 +89,7 @@ var adminJFormData = layui.adminJFormData;
 ```
 - 初始化html form，初始化各种组件和初始值:
 ```
-adminJFormData.init(_json, 'form');//_json 为form render导出 html时自动生成的代码，第2个参数为 fomr 的 lay-filter 值
+adminJFormData.init(_json, 'form');//_json 为form render导出 html时自动生成的代码，第2个参数为 form 的 lay-filter 值
 ```
 - 初始化数据:
 ```
@@ -99,7 +99,7 @@ adminJFormData.setData('form',d);//第一个参数为fomr 的 lay-filter 值, �
 - 取数据：
 
 ```
-var data = adminJFormData.getData('form');//第一个参数为fomr 的 lay-filter 值
+var data = adminJFormData.getData('form');//第一个参数为form 的 lay-filter 值
 ```
 
 
