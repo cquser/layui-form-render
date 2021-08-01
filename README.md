@@ -71,9 +71,9 @@ formRender.exportJSON();//导出JSON
 
 
 ####  **AdminJFormData (editor_base.html) 功能使用说明**
-AdminJFormData 是对form render的增强，如果你在导出的html form里选择了长度，最大值 最小值验证等、使用了编辑器、滑块，用AdminJFormData会自动初始化这些组件并且生成验证功能，其节省的时候比 form render要多的多。
+AdminJFormData 是对form render的增强，如果你在导出的html form里选择了长度，最大值 最小值验证等、使用了编辑器、滑块，用AdminJFormData会自动初始化这些组件并且生成验证功能，其节省的时间比 form render要多的多。
 
-editor_base.html 集成了getData('form lay-filter'),和setData('form lay-filter',{}) 功能， getData拿取form数据，setData 设置form数据, 功能可以在预览里体验
+AdminJFormData 集成了getData('form lay-filter'),和setData('form lay-filter',{}) 功能， getData拿取form数据，setData 设置form数据, 功能可以在预览里体验
 ，使用需要把导出的html代码粘到editor_base.html 的 body里即可。
 
  **关于图片上传结果:** 
