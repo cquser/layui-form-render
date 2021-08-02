@@ -168,7 +168,7 @@ layui.use('element', function () {
 所有的拖动后生成的组件都在这里，可以显示出来进行编辑预览等操作
 
 -  **8-2 增加无限级选择联动** 
-    修改了ajax请求时返回的结果的key name ，包括数据请求和文件上传
+    修改了ajax请求时返回的结果的key name ，包括数据请求和文件上传 ,标准为{resultCode:0,message:"",result:结果} ,可在 config.ajaxRequestName 自定义
 
 -  **8-1 发布 AdminJFormData 版本** 
 
