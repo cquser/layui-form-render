@@ -106,11 +106,11 @@ var data = adminJFormData.getData('form');//第一个参数为form 的 lay-filte
 
 
  **关于图片上传结果:** 
-需要server返回 code=0,filename=上传文件名 的json的数据结构，如果是多文件上传则getData时对应字段拿到的是个array,单文件是string
+需要server返回 resultCode=0,result.filename=上传文件名 的json的数据结构，如果是多文件上传则getData时对应字段拿到的是个array,单文件是string
 
-| code     | 0      | 上传成功返回0  |
+| resultCode | 0      | 上传成功返回0  |
 |----------|--------|----------|
-| filename | xx.jpg | 上传成功的文件名 |
+| result.filename | xx.jpg | 上传成功的文件名 |
 
 
 
@@ -138,6 +138,23 @@ layui.use('element', function () {
 ```
 
 
+ **无限级联动 数据API说明** 
+| parentId | 上级ID  | 初始化时传值 ,在最顶级时 parentId会传空字符                                                              |
+|----------|-------|-----------------------------------------------------------------------|
+| selectId | 选中的ID | 在编辑时传值，与parentId只传一个值，传selectId时server必须返回 selectId所在级别的数据和它所有上级的数据列表,传selectId时parentId无效 |
+| isSelect | 是否选中 | "0" 是 "1" 否 |
+
+传parentId时返回的完整数据样例
+
+```
+{"resultCode":0,"result":[{"isSelect":"1","text":"title0","value":"0"},{"isSelect":"1","text":"title1","value":"1"},{"isSelect":"1","text":"title2","value":"2"}]}
+```
+传selectId时返回的完整数据样例
+
+```
+{"resultCode":0,"result":[[{"isSelect":"1","text":"title0","value":"0"},{"isSelect":"1","text":"title1","value":"1"},{"isSelect":"0","text":"title2","value":"2"}],[{"isSelect":"1","text":"title0","value":"0"},{"isSelect":"1","text":"title1","value":"1"},{"isSelect":"0","text":"title2","value":"2"}],[{"isSelect":"1","text":"title0","value":"0"},{"isSelect":"1","text":"title1","value":"1"},{"isSelect":"0","text":"title2","value":"2"}]]}
+```
+
 
 #### 参与贡献
 
@@ -150,7 +167,10 @@ layui.use('element', function () {
 ```
 所有的拖动后生成的组件都在这里，可以显示出来进行编辑预览等操作
 
+-  **8-2 增加无限级选择联动** 
+    修改了ajax请求时返回的结果的key name ，包括数据请求和文件上传
+
 -  **8-1 发布 AdminJFormData 版本** 
 
--  **7-2? 发布第一个form render版本** 
+-  **2021-7-2? 发布第一个form render版本** 
 
