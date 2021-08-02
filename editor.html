@@ -665,7 +665,12 @@
 
     function AdminJLayuiFormRender() {
         this.propertiesMap={};
-        this.config={dragName: "adminjForm",defaultLabelWidth:80};
+        this.config={dragName: "adminjForm",defaultLabelWidth:80,
+        ajaxRequestName:{
+                resultCodeName:'resultCode',
+            messageName:'message',
+            resultName:'result'
+        }};
     }
 
     AdminJLayuiFormRender.prototype.isEmpty=function (str) {
@@ -677,12 +682,7 @@
         this.initLeftUI();
 
         this.createSortable('sortable', {});
-        this.config={
-            ajaxRequestName:{
-                resultCodeName:'resultCode',
-            messageName:'message',
-            resultName:'result'
-        }};
+    
 
     }
 
