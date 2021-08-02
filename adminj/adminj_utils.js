@@ -38,3 +38,28 @@ Array.prototype.deleteValue=function(val){
 stringIsEmpty=function (str) {
     return str==undefined || str.length==0;
 }
+
+function ajaxData(method,url,formData,succFunc,ajaxConfig) {
+    $.ajax({
+        url:url,
+        type:method,
+        contentType: "application/json;charset=utf-8",
+        data:formData,
+        success:function (data) {
+            var resultCodeName='resultCode',messageName='message';
+            if(ajaxConfig!=undefined){
+                resultCodeName=ajaxConfig.resultCodeName;
+                messageName=ajaxConfig.messageName;
+            }
+            if(data[resultCodeName]==0){
+                succFunc(data)
+            }else{
+                var msg=data[messageName];
+                if(msg==undefined)msg='数据请求出错';
+                layui.layer.msg(msg);
+            }
+        },error:function (data) {
+            layui.layer.msg('load data error:'+JSON.stringify(data));
+        }
+    });
+}
