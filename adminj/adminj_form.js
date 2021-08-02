@@ -780,15 +780,15 @@ AdminJFormData.prototype.uploadImageFile=function(divId, uploadId, item, isMulti
 AdminJFormData.prototype.updateUploadFilename=function(formId,divId,uploadId, res, isMulti){
     //
     var that=this;
-    if(res.filename!=undefined){
+    if(res.result.filename!=undefined){
         var name=that.propertiesMap[formId][divId]['name']
         if(isMulti){
             var files=that.formData[formId][name]
             if(files==undefined)files={}
-            files[uploadId]=res.filename
+            files[uploadId]=res.result.filename
             that.formData[formId][name]=files
         }else{
-            that.formData[formId][name]=res.filename
+            that.formData[formId][name]=res.result.filename
         }
     }
 }
