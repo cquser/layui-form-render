@@ -107,6 +107,7 @@ var data = adminJFormData.getData('form');//第一个参数为form 的 lay-filte
 
  **关于图片上传结果:** 
 需要server返回 resultCode=0,result.filename=上传文件名 的json的数据结构，如果是多文件上传则getData时对应字段拿到的是个array,单文件是string
+样例：{resultCode:0,message:"",result:结果}
 
 | resultCode | 0      | 上传成功返回0  |
 |----------|--------|----------|
@@ -139,10 +140,15 @@ layui.use('element', function () {
 
 
  **无限级联动 数据API说明** 
+ 提交数据
 | parentId | 上级ID  | 初始化时传值 ,在最顶级时 parentId会传空字符                                                              |
 |----------|-------|-----------------------------------------------------------------------|
 | selectId | 选中的ID | 在编辑时传值，与parentId只传一个值，传selectId时server必须返回 selectId所在级别的数据和它所有上级的数据列表,传selectId时parentId无效 |
+
+返回数据
 | isSelect | 是否选中 | "0" 是 "1" 否 |
+| text | 显示的文本 |  |
+| value | select value |  |
 
 传parentId时返回的完整数据样例
 
