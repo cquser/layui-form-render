@@ -215,6 +215,8 @@
     <script src="libs/select2/js/select2.full.min.js"></script>
     <script src="libs/ckeditor5/ckeditor.js"></script>
 
+    <script src="adminj/adminj_utils.js"></script>
+
 </head>
 <body>
 <form action="browse.jsp" method="post" target="_blank id="browseResultForm">
@@ -545,6 +547,12 @@
         <div class="layui-form-mid layui-word-aux"></div>
     </div>
 
+    <div class="layui-form-item adminj-sort-item" id="selectS">
+        <label class="layui-form-label">无限级联动</label>
+          
+          <div class="layui-form-mid layui-word-aux"></div>
+    </div>
+
 
     <div class="layui-form-item adminj-sort-item" id="editor">
                             <label class="layui-form-label">文本编辑器</label>
@@ -669,6 +677,12 @@
         this.initLeftUI();
 
         this.createSortable('sortable', {});
+        this.config={
+            ajaxRequestName:{
+                resultCodeName:'resultCode',
+            messageName:'message',
+            resultName:'result'
+        }};
 
     }
 
@@ -712,6 +726,7 @@
             'editor': '文本编辑器',
             'slider': '滑块',
             'rate': '评分',
+            'selectS': '无限级联动',
             'submitData': '提交数据'
         }
         var cpts_file = {'uploadImage': '单图上传', 'uploadImages': '多图上传', 'uploadFile': '文件上传', 'uploadFiles': '多文件上传'}
@@ -2010,6 +2025,81 @@
                 properties[dataId] = selectUI + '|' + $(this).val()
 
             })
+        }
+
+        tools.renderSelectS = function (item) {
+            
+            var divId=item.attr('id');
+            tools.renderBase(item, {showComment: true});
+            tools.renderInput(item, 'ajax url', 'requestURL', '');
+            var html=tools.renderRow('选择提示(一行一个)','<textarea id="defOptions" style="width:98%;height:100px;"></textarea>');
+            tools.rootNode.append(html);
+
+            var options=that.propertiesMap[divId]['defOptions'];
+            var _options='';
+            if(options!=undefined){
+                for(var i=0;i<options.length;i++){
+                    _options+=options[i]+'\n';
+                }
+            }
+            $('#defOptions').val(_options);
+
+            
+            $('#defOptions').focusout(function(){
+                var arr=$(this).val().split('\n'),newArr=[];
+                for(var i=0;i<arr.length;i++){
+                    if(arr[i]!='')newArr[newArr.length]=arr[i];
+                }
+                that.propertiesMap[divId]['defOptions']=newArr;
+            });
+
+            var selectFunc=function(url,parentId){
+                var newUrl=url+'parentId='+parentId;
+
+                    ajaxData('get',newUrl,{},function(res){
+                    var list=res[that.config.ajaxRequestName.resultName];
+                    //var v='{"resultCode":0,"result":[{"isSelect":"1","text":"title0","value":"0"},{"isSelect":"1","text":"title1","value":"1"},{"isSelect":"1","text":"title2","value":"2"},{"isSelect":"1","text":"title3","value":"3"}]}';
+                    //list=JSON.parse(v);
+                    //list=list.result;
+
+                    if(list!=undefined && list.length>0){
+                        var options=that.propertiesMap[divId]['defOptions'];
+                        var defText='选择';
+                        var len=item.find('select').length;
+                        if(options!=undefined && options.length>len)defText=options[len];
+                        var selectId='selects_id_'+len;
+                        var _html='<div class="layui-input-inline"><select id="'+selectId+'" lay-filter="'+selectId+'">';
+                            _html+='<option value="">'+defText+'</option>';
+                        for(var i=0;i<list.length;i++){
+                            var row=list[i];
+                            _html+='<option value='+row.value+'>'+row.text+'</option>';
+                        }
+                        _html+='</select></div>';
+                        var html=$(_html);
+                        item.find('.layui-form-mid').before(html);
+
+                        layui.form.on('select('+selectId+')', function(data){
+                            var selectId=$(data.elem).attr('id');
+                            $('#'+selectId).parent().nextAll().each(function(i,e){
+                                if($(this).attr('class').indexOf('layui-input-inline')!=-1){
+                                    $(this).remove();
+                                }
+                            });
+                            selectFunc(url,data.value);
+                        });
+                        
+                    }
+                    
+                    layui.form.render('select');
+                },that.config.ajaxRequestName);
+            }
+
+            $('#requestURL').focusout(function(){
+                var url=$(this).val();
+                if(that.isEmpty(url))return false;
+                url=url+(url.indexOf('?')==-1)?'?':'&';
+                selectFunc(url,'');
+            });
         }
 
         tools.renderDateRange = function (item) {

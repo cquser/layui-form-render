@@ -14,6 +14,11 @@ function AdminJFormData() {
     this.editorMap={};//h5edtor object
     this.formIdName='layui-form-id';
     this.config={
+        ajaxRequestName:{
+            resultCodeName:'resultCode',
+            messageName:'message',
+            resultName:'result'
+        },
         validate:{
             username: function(value, item){
                 if(!new RegExp("^[a-zA-Z0-9_\u4e00-\u9fa5\\s·]+$").test(value)){
@@ -312,6 +317,37 @@ AdminJFormData.prototype.cptSelect2= function (that,item) {
     that.resetDataCpt[that.resetDataCpt.length]='select2';
 }
 
+AdminJFormData.prototype.cptSelectS= function (that,item) {
+    var divId=item.attr('id'),formId=item.attr(that.formIdName);
+
+    var selectFunc = function (url,item,divId, parentId) {
+        var newUrl = url + 'parentId=' + parentId;
+
+        ajaxData('get', newUrl, {}, function (res) {
+            if(that.editMode==true)return;
+            var list = res[that.config.ajaxRequestName.resultName];
+            if (list != undefined && list.length > 0) {
+                var len = item.find('select').length;
+                that.initSelectS(that,item,formId,divId,list,len);
+            } else {
+                if (!stringIsEmpty(parentId)) {
+                    var name=that.propertiesMap[formId][divId]['name'];
+                    that.formData[formId][name] = parentId;
+                }
+            }
+
+            layui.form.render('select');
+        }, that.config.ajaxRequestName);
+    }
+
+    var url=that.propertiesMap[formId][divId]['requestURL'];
+    if(stringIsEmpty(url))return false;
+    url=url+((url.indexOf('?')==-1)?'?':'&');
+    selectFunc(url,item,divId,'');
+
+    that.resetDataCpt[that.resetDataCpt.length]='selectS';
+}
+
 AdminJFormData.prototype.cptDateRange= function (that,item) {
     var divId=item.attr('id'),formId=item.attr(that.formIdName);
     //var name=that.propertiesMap[divId]['name'];
@@ -537,8 +573,14 @@ AdminJFormData.prototype.uploadSingleFile=function(divId, cptId, item) {
                 return fname;
             }}
         , done: function (res) {
-            layui.layer.msg('上传成功');
             $('#uploaded_div').html('')
+            if(res[that.ajaxRequestName.resultCodeName]>0){
+                var msg=res[that.ajaxRequestName.messageName];
+                if(msg==undefined)msg='上传失败';
+                layui.layer.msg(msg);
+                return;
+            }
+            layui.layer.msg('上传成功');
             that.updateUploadFilename(formId,divId,'',res,false)
         }, progress: function (n, index, e) {
             $('#uploaded_div').html(n + '%')
@@ -610,12 +652,15 @@ AdminJFormData.prototype.uploadFiles=function(divId, cptId, item) {
                 , tds = tr.children();
             tds.eq(3).html(''); //清空操作
             delete this.files[index]; //删除文件队列已经上传成功的文件
-            if(res.code == 0){
-                _that.updateUploadFilename(formId,divId,uploadId,res,true)
+            if(res[that.ajaxRequestName.resultCodeName]>0){
+                var msg=res[that.ajaxRequestName.messageName];
+                if(msg==undefined)msg='上传失败';
+                layui.layer.msg(msg);
+                this.error(index, upload);
+                return;
             }
-            return;
-            //}
-            this.error(index, upload);
+            
+            _that.updateUploadFilename(formId,divId,uploadId,res,true)
         }
         , allDone: function (obj) { //多文件上传完毕后的状态回调
             console.log(obj)
@@ -686,9 +731,13 @@ AdminJFormData.prototype.uploadImageFile=function(divId, uploadId, item, isMulti
             _selectLine.find('#upload_bar_div').hide();
             _selectLine.find('#upload_mask_div').hide();
             //如果上传失败
-            if(res.code > 0){
+            
+            if(res[that.ajaxRequestName.resultCodeName]>0){
+                var msg=res[that.ajaxRequestName.messageName];
+                if(msg==undefined)msg='上传失败';
+                layui.layer.msg(msg);
                 _selectLine.find('.bi-cloud-upload').show();
-                return layer.msg('上传失败');
+                return;
             }
             //上传成功的一些操作
             //……
@@ -703,6 +752,7 @@ AdminJFormData.prototype.uploadImageFile=function(divId, uploadId, item, isMulti
             _selectLine.find('#upload_ul').children().css('border','0px')
             _selectLine.find('#image_src').show();
             _selectLine.find('.bi-cloud-upload').hide();
+            
 
             that.updateUploadFilename(formId,divId,uploadId,res,isMulti)
 
@@ -810,6 +860,8 @@ AdminJFormData.prototype.getData=function(formId) {
 }
 
 AdminJFormData.prototype.setData=function(formId,data) {
+    var that=this;
+    that.editMode=true;
     var formMap=this.propertiesMap[formId];
     for(divId in formMap){
         var properties=formMap[divId];
@@ -894,14 +946,39 @@ AdminJFormData.prototype.setData=function(formId,data) {
                 break;
             case 'switch':
                 if (initValue != undefined) {
-                var selectedValue=properties['selectedValue'],defValue=properties['defValue'];
-                if(initValue==selectedValue){
-                    $('#'+divId).find('[type="checkbox"]').prop('checked','true');
-                }else{
-                    $('#'+divId).find('[type="checkbox"]').prop('checked', '');
-                }
+                    var selectedValue = properties['selectedValue'], defValue = properties['defValue'];
+                    if (initValue == selectedValue) {
+                        $('#' + divId).find('[type="checkbox"]').prop('checked', 'true');
+                    } else {
+                        $('#' + divId).find('[type="checkbox"]').prop('checked', '');
+                    }
                 }
                 break;
+            case 'selectS':
+                var name=that.propertiesMap[formId][divId]['name'];
+            
+                var selectFunc = function (url,divId, selectId) {
+                    var newUrl = url + 'selectId=' + selectId;
+
+                    ajaxData('get', newUrl, {}, function (res) {
+                        var list = res[that.config.ajaxRequestName.resultName];
+                        if (list != undefined && list.length > 0) {
+                            for (var j = 0; j < list.length; j++) {
+                                var selectArray=list[j];
+                                that.initSelectS(that,undefined,formId,divId,selectArray,j);
+                            }
+                        }
+
+                        layui.form.render('select');
+                    }, that.config.ajaxRequestName);
+                }
+            
+                var url=that.propertiesMap[formId][divId]['requestURL'];
+                if(stringIsEmpty(url))return false;
+                url=url+((url.indexOf('?')==-1)?'?':'&');
+                selectFunc(url,divId,initValue);
+
+            break;
         }
 
     }
@@ -910,6 +987,51 @@ AdminJFormData.prototype.setData=function(formId,data) {
     layui.form.val(formId,data);
     layui.form.render();
 
+}
+
+AdminJFormData.prototype.initSelectS=function(that,item,formId,divId,selectArray,index){
+    if(selectArray==undefined || selectArray.length==0)return;
+    if(item==undefined)item=$('#'+divId);
+    var name=that.propertiesMap[formId][divId]['name'];
+    var options = that.propertiesMap[formId][divId]['defOptions'];
+    var defText = '选择';
+    if (options != undefined && options.length > index) defText = options[index];
+    var selectId = 'selects_id_' + index;
+    var _html = '<div class="layui-input-inline"><select id="' + selectId + '" lay-filter="' + selectId + '">';
+    _html += '<option value="">' + defText + '</option>';
+    for (var i = 0; i < selectArray.length; i++) {
+        var row = selectArray[i];
+        var selected = row.isSelect == '0' ? 'selected' : '';
+        _html += '<option value="' + row.value + '" ' + selected + '>' + row.text + '</option>';
+    }
+    _html += '</select></div>';
+    var html = $(_html);
+    item.find('.layui-form-mid').before(html);
+
+    layui.form.on('select(' + selectId + ')', function (data) {
+        var selectId = $(data.elem).attr('id');
+        $('#' + selectId).parent().nextAll().each(function (i, e) {
+            if ($(this).attr('class').indexOf('layui-input-inline') != -1) {
+                $(this).remove();
+            }
+        });
+        that.formData[formId][name] = '';
+    
+        var url=that.propertiesMap[formId][divId]['requestURL'];
+
+        if(stringIsEmpty(url))return false;
+        url=url+((url.indexOf('?')==-1)?'?':'&');
+        var newUrl=url+'parentId='+data.value;
+
+        ajaxData('get', newUrl, {}, function (res) {
+            var list = res[that.config.ajaxRequestName.resultName];
+            if(list==undefined || list.length==0)return;
+            var len = item.find('select').length;
+            that.initSelectS(that,item,formId,divId,list,len);
+            layui.form.render('select')
+        }, that.config.ajaxRequestName);
+
+    });
 }
 
 AdminJFormData.prototype.replaceFileSuffix=function(arr){
