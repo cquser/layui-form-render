@@ -581,7 +581,7 @@ AdminJFormData.prototype.uploadSingleFile=function(divId, cptId, item) {
                 return;
             }
             layui.layer.msg('上传成功');
-            that.updateUploadFilename(formId,divId,'',res,false)
+            that.updateUploadFilename(that,formId,divId,'',res,false)
         }, progress: function (n, index, e) {
             $('#uploaded_div').html(n + '%')
             if (n == 100) {
@@ -660,7 +660,7 @@ AdminJFormData.prototype.uploadFiles=function(divId, cptId, item) {
                 return;
             }
             
-            _that.updateUploadFilename(formId,divId,uploadId,res,true)
+            _that.updateUploadFilename(_that,formId,divId,uploadId,res,true)
         }
         , allDone: function (obj) { //多文件上传完毕后的状态回调
             console.log(obj)
@@ -754,7 +754,7 @@ AdminJFormData.prototype.uploadImageFile=function(divId, uploadId, item, isMulti
             _selectLine.find('.bi-cloud-upload').hide();
             
 
-            that.updateUploadFilename(formId,divId,uploadId,res,isMulti)
+            that.updateUploadFilename(that,formId,divId,uploadId,res,isMulti)
 
             // _selectLine.find('#msgText').html(''); //置空上传失败的状态
         }
@@ -777,18 +777,18 @@ AdminJFormData.prototype.uploadImageFile=function(divId, uploadId, item, isMulti
     });
 }
 
-AdminJFormData.prototype.updateUploadFilename=function(formId,divId,uploadId, res, isMulti){
+AdminJFormData.prototype.updateUploadFilename=function(that,formId,divId,uploadId, res, isMulti){
     //
     var that=this;
-    if(res.result.filename!=undefined){
+    if(res[that.config.ajaxRequestName.resultName].filename!=undefined){
         var name=that.propertiesMap[formId][divId]['name']
         if(isMulti){
             var files=that.formData[formId][name]
             if(files==undefined)files={}
-            files[uploadId]=res.result.filename
+            files[uploadId]=res[that.config.ajaxRequestName.resultName].filename
             that.formData[formId][name]=files
         }else{
-            that.formData[formId][name]=res.result.filename
+            that.formData[formId][name]=res[that.config.ajaxRequestName.resultName].filename
         }
     }
 }
