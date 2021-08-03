@@ -307,7 +307,10 @@ AdminJFormData.prototype.cptSelect2= function (that,item) {
     item.find("select").select2().on('select2:select', function (e) {
         //console.log('s:' + JSON.stringify(e.params.data.id+'='+e.params.data.text));
         var arr=that.formData[formId][name];
-        if(arr==undefined)arr=[];
+        if(arr==undefined){
+            arr=[];
+            that.formData[formId][name]=arr;
+        }
         arr[arr.length]=e.params.data.id;
     }).on('select2:unselect', function (e) {
         //console.log('us:' + JSON.stringify(e.params.data));
