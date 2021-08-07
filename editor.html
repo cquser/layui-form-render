@@ -1558,7 +1558,7 @@
                 if(val=='0'){
                     item.find('input').prop('checked','checked');
                 }else{
-                    item.find('input').removeAttr('checked');
+                    item.find('input').prop('checked','');
                 }
                 properties['isSelect']=val;
                 layui.form.render('checkbox');
@@ -2541,6 +2541,7 @@
                 html.attr('id',divId);
                 if(!that.isEmpty(rowData.name))html.attr('name',rowData.name);
                 if(!that.isEmpty(rowData.defValue))html.val(rowData.defValue);
+                that.propertiesMap[divId] = rowData;
                 return html;
             }
             html = $($('#cpts_items').find("#" + cptId).get(0).outerHTML);
