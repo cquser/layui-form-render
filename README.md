@@ -13,7 +13,7 @@ AdminJ layui-form-render 不只是生成html form 还另外提供了 AdminJFormD
 
 扩展左则按钮和右则属性演示地址: http://47.244.155.29:13308/editor/editor_external.html
 
-最新版本请到：https://gitee.com/adminj/layui-form-render 下载，本为证书问题这个更新的慢
+最新版本请到：https://gitee.com/adminj/layui-form-render 下载，因为证书问题这里更新的慢
 
 #### 软件架构
 基于layui开发，所使用的插件:
