@@ -4,15 +4,16 @@
 
 ![界面图](https://images.gitee.com/uploads/images/2021/0720/001030_f747e566_9463723.jpeg "editor1.jpg")
 
-目前要下载请从这里下载:https://gitee.com/adminj/layui-form-render，github账号有点问题了：修正后才可以用
-
-
 #### 介绍
 基于layui的表单设计器，自己的一个开源项目里提出来的子项目，主要参考了阿狸的那个VUE的 form render，目前此项目处于开始阶段，另外并没有跟layui集成，如果想集成到一起只需要把HTML>body的内容放在变量里在render() 里开头写入即可
 
 AdminJ layui-form-render 不只是生成html form 还另外提供了 AdminJFormData form的数据初始化组件(数据)并生成验证代码功能(参考editor_base.html)，开箱即用。
 
 演示地址: http://47.244.155.29:13308/editor/editor.html
+
+扩展左则按钮和右则属性演示地址: http://47.244.155.29:13308/editor/editor_external.html
+
+最新版本请到：https://gitee.com/adminj/layui-form-render 下载，本为证书问题这个更新的慢
 
 #### 软件架构
 基于layui开发，所使用的插件:
@@ -36,7 +37,8 @@ var formRender = new AdminJLayuiFormRender();
 formRender.exportToHTML();//导出html
 formRender.importJSON('json');//导入逆向生成html
 formRender.exportJSON();//导出JSON
-formRender.importHtmlJSON(json);//导出HTML后，可以把导出的HTML开头的_json里的数据粘出来后通过些函数逆向生成form
+formRender.disabledAll(formId, true/false);//禁用/启用所有字段
+formRender.disabled(formId, ['title','username'], true/false);//禁用/启用title,username
 ```
 | 参数           | 说明      |            |
 |--------------|---------|------------|
@@ -174,27 +176,14 @@ layui.use('element', function () {
 
 #### 2开简单说明
 
-1. 在initLeftUI()方法cpts_base增加左边拖动按钮,如:'rate': '评分'
-2. 在html的body>#cpts_items下增加自定义组件，拖放完成后会替换成这里的代码,需要增加参数 cpt_id='rate' rename='true/false' 增加css 'adminj-sort-item'，如果你增加的容器组件，需要在容器组件里放其它拖放组件的上一级增加css 'adminj-col-item' ，然后把有'adminj-col-item'的节点绑定拖动事件:that.createSortable('有adminj-col-item节点的ID', {}),初始化组件事件参考第3步,参考renderGroupLayout
-
-| cpt_id | 组件名             |                 |
-|--------|-----------------|-----------------|
-| rename | true/false | 是否对节点下的:input改名，组件的初始化name,不是ID |
-
-
-3. 在initInputComponents()里的components 节点增加 renderXX 初始化组件，如果你cpts_base的组件名是 rate ,方法名则为 renderRate
-4. 在initRightPropertiesComponents().tools 里增加点击组件后右边显示的属性编辑器，方法命名为 tools.renderXXX，如果你cpts_base的组件名是 rate ,方法名则为 tools.renderRate
-5. 导入导出，如果是非容器组件不需要再进行其它操作，会自动完成，容器组件自行参考代码 groupLayout、tab
+在html里找到下面代码
+```
+<span id="cpts_items" style="display: none">
+```
+所有的拖动后生成的组件都在这里，可以显示出来进行编辑预览等操作
 
 
-
--  **8-13 增加选项卡组件,增加html json转form(导入HTML JSON)** 
-
-    - 增加选项卡组件
-    - html json转form(导入HTML JSON):导出HTML后，可以把导出的HTML开头的_json里的数据粘出来后通过些函数逆向生成form
-    - 这里是列表文本修正导出html时里生成的json有重复数据问题
-    - 这里是列表文本修正admin_form js里里groupLayou子组件不显示BUG
-    - 这里是列表文本修正其它小BUG
+-  **11-26修正了 adminJFormData BUG，增加了禁用启用表单功能，增加了扩展左则按钮和右则属性演示
 
 -  **8-2 增加无限级选择联动** 
     修改了ajax请求时返回的结果的key name ，包括数据请求和文件上传 ,标准为{resultCode:0,message:"",result:结果} ,可在 config.ajaxRequestName 自定义
@@ -202,6 +191,4 @@ layui.use('element', function () {
 -  **8-1 发布 AdminJFormData 版本** 
 
 -  **2021-7-2? 发布第一个form render版本** 
-
-
 
